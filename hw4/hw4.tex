@@ -596,7 +596,7 @@
 
   -O2：较高优化，代码显著减少，执行效率显著提升，适用于大多数应用程序。
 
-  -O3：最高级别优化，进一步优化代码长度和执行效率，适用于对性能要求极高的应用程序。（在本题中看不出来效果）
+  -O3：最高级别优化，进一步优化代码长度和执行效率，适用于对性能要求极高的应用程序。（本题无效果）
   
 \noindent
 \textbf{4.4}
@@ -605,9 +605,7 @@
 
 \begin{lstlisting}[language=C]
   #include <stdio.h>
-
-  struct exp
-  {
+  struct exp{
       char a;
       short b;
       int c;
@@ -617,8 +615,7 @@
       long double g;
   };
   
-  int main()
-  {
+  int main(){
       struct exp s;
       printf("Size of struct: %lu\n", sizeof(s));
       printf("Size of char: %lu\n", sizeof(s.a));
@@ -676,4 +673,53 @@
 \end{lstlisting}
 
 显然有$64 > 1 + 2 + 4 + 8 + 4 + 8 + 16$，这也是由于结构体内部的成员在内存中是按照对齐方式排列的，char类型的成员a占用1字节，long double类型的成员g占用16字节，从第16字节开始，short类型的成员b占用2字节，从第32字节开始，int类型的成员c占用4字节，从第36字节开始，long类型的成员d占用8字节，从第40字节开始，float类型的成员e占用4字节，从第48字节开始，double类型的成员f占用8字节，从第56字节开始，所以结构体的大小为64字节。
+
+\noindent
+\textbf{4.5}
+
+我使用x86汇编，所写程序如下：
+
+\begin{lstlisting}[language={[x86masm]Assembler}]
+  section .bss
+  buffer resb 1  ; 用于存储输入的字符
+  
+  section .text
+  global _start
+  
+  _start:
+      ; 系统调用号 (sys_read)
+      mov rax, 0          ; 系统调用号 (sys_read)
+      mov rdi, 0          ; 文件描述符 (stdin)
+      mov rsi, buffer     ; 缓冲区地址
+      mov rdx, 1          ; 读取的字节数
+      syscall             ; 调用内核
+  
+      ; 系统调用号 (sys_write)
+      mov rax, 1          ; 系统调用号 (sys_write)
+      mov rdi, 1          ; 文件描述符 (stdout)
+      mov rsi, buffer     ; 缓冲区地址
+      mov rdx, 1          ; 写入的字节数
+      syscall             ; 调用内核
+  
+      ; 系统调用号 (sys_exit)
+      mov rax, 60         ; 系统调用号 (sys_exit)
+      xor rdi, rdi        ; 退出状态码
+      syscall             ; 调用内核
+\end{lstlisting}
+
+通过gdb调试，观察\texttt{sys_read}系统调用前后的寄存器状态：
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{beforesysread_reg.png}
+  \caption{sys\_read系统调用前寄存器状态}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{aftersysread_reg.png}
+  \caption{sys\_read系统调用后寄存器状态}
+\end{figure}
+
+对照x86的ABI，系统调用号存储在\texttt{rax}寄存器中，文件描述符存储在\texttt{rdi}寄存器中，缓冲区地址存储在\texttt{rsi}寄存器中，读取的字节数存储在\texttt{rdx}寄存器中，且使用syscall指令来触发系统调用。观察gdb调试结果，发现\texttt{rcx}寄存器的值从0变为0x40101b，这是因为\texttt{rcx}寄存器在\texttt{sys_read}系统调用之后被修改为当前指令的pc值，以回到用户态继续执行。
 \end{document}
