@@ -1,0 +1,508 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[UTF8]{report}
+% ------------------------------------------------------------------------
+% Packages
+% ------------------------------------------------------------------------
+\usepackage{ctex} % 支持中文
+\usepackage[body={7in, 9in},left=1in,right=1in]{geometry} % 改变页边距
+\usepackage{amsmath} % AMS 的数学宏包
+\usepackage{amsfonts} % AMS 的数学字体宏包
+\usepackage{amssymb} % AMS 符号库
+\usepackage{bm} % 数学公式中的黑斜体
+\usepackage{amsthm} % AMS 的定理环境宏包
+\usepackage{graphicx} % 插图
+\usepackage{subfigure} % 插子图
+\usepackage{nicefrac} % 好看的分数
+\usepackage{mathrsfs} % mathscr font
+\usepackage{caption} % caption
+\usepackage{algorithm,algorithmicx} % 伪代码支持宏包
+\usepackage[noend]{algpseudocode} % 伪代码
+\usepackage{fancyhdr} % 设置页眉、页脚
+\usepackage{adjustbox} % 图片尺寸自动调整
+\usepackage{esint} % 积分符号
+\usepackage{mathtools} % 数学宏包的重要补充
+\usepackage{upgreek} % 数学环境的直立希腊字母
+\usepackage{enumitem} % 使用enumitem宏包, 改变列表项的格式
+\usepackage{color} % 支持彩色
+\usepackage{extarrows} % 任意长度的箭头
+\usepackage{tikz} % 绘图
+\usepackage{forest} % 绘树
+\usepackage{xcolor} % 颜色宏包
+\usepackage{breqn} % 公式自动换行
+\usepackage{fontsize} % 字体大小
+\usepackage[framemethod=TikZ]{mdframed} % 给文字加框
+\usepackage{fontspec} % 字体库
+\usepackage{bigstrut} % 用于表格中的换行
+\usepackage{multirow} % 表格中多行单元格合并
+\usepackage{multicol} % 表格中多列单元格合并
+\usepackage{longtable} % 长表格
+\usepackage{rotating} % 旋转图形和表格      以上三者用于绘制三线表
+\usepackage{booktabs} % 三线表宏包
+\usepackage{scribe} % Scribe 模板
+\usepackage{diagbox} % 表格斜线
+\usepackage{listings} % 插入代码
+\usepackage{verbatim} % 多行注释
+\usepackage{ifplatform} % 检测编译平台
+\usepackage{hyperref} % 超链接
+\usepackage{mathrsfs} % 花体
+\usetikzlibrary{shapes.geometric, arrows} % 引入流程图需要的库
+\usetikzlibrary{automata} % 引入automata库
+\usetikzlibrary{shapes,arrows,positioning,chains} % 引入positioning库
+% ------------------------------------------------------------------------
+% Macros
+% ------------------------------------------------------------------------
+%~~~~~~~~~~~~~~~
+% Utility latin
+%~~~~~~~~~~~~~~~
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+%~~~~~~~~~~~~~~~
+% Environment shortcuts
+%~~~~~~~~~~~~~~~
+\newcommand{\balign}[1]{\ealign{\begin{align}#1\end{align}}}
+\newcommand{\baligns}[1]{\ealigns{\begin{align*}#1\end{align*}}}
+\newcommand{\bitemize}[1]{\eitemize{\begin{itemize}#1\end{itemize}}}
+\newcommand{\benumerate}[1]{\eenumerate{\begin{enumerate}#1\end{enumerate}}}
+%~~~~~~~~~~~~~~~
+% Text with quads around it
+%~~~~~~~~~~~~~~~
+\newcommand{\qtext}[1]{\quad\text{#1}\quad}
+%~~~~~~~~~~~~~~~
+% Shorthand for math formatting
+%~~~~~~~~~~~~~~~
+\newcommand{\mbb}[1]{\mathbb{#1}}
+\newcommand{\mbi}[1]{\boldsymbol{#1}} % Bold and italic (math bold italic)
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\mrm}[1]{\mathrm{#1}}
+\newcommand{\tbf}[1]{\textbf{#1}}
+\newcommand{\tsc}[1]{\textsc{#1}}
+%\def\\langle {{\langle }}
+%\def\\rangle {{\rangle }}
+\newcommand{\sT}{\sf T}
+\newcommand{\grad}{\nabla}
+\newcommand{\Proj}{\Pi}
+%~~~~~~~~~~~~~~~
+% Common sets 定义数集符号
+%~~~~~~~~~~~~~~~
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}} % Real number symbol
+\newcommand{\integers}{\mathbb{Z}} % Integer symbol
+\newcommand{\rationals}{\mathbb{Q}} % Rational numbers
+\newcommand{\naturals}{\mathbb{N}} % Natural numbers
+\newcommand{\complex}{\mathbb{C}} % Complex numbers
+%~~~~~~~~~~~~~~~
+% Common functions
+%~~~~~~~~~~~~~~~
+\renewcommand{\exp}[1]{\operatorname{exp}\left(#1\right)} % Exponential
+\newcommand{\indic}[1]{\mbb{I}\left(#1\right)} % Indicator function
+\newcommand{\indicsub}[2]{\mbb{I}_{#2}\left(#1\right)} % Indicator function
+\newcommand{\argmax}{\mathop\mathrm{arg\, max}} % Defining math symbols
+\newcommand{\argmin}{\mathop\mathrm{arg\, min}}
+\renewcommand{\arccos}{\mathop\mathrm{arccos}}
+\newcommand{\dom}{\mathop\mathrm{dom}} % Domain
+\newcommand{\range}{\mathop\mathrm{range}} % Range
+\newcommand{\diag}{\mathop\mathrm{diag}}
+\newcommand{\tr}{\mathop\mathrm{tr}}
+\newcommand{\abs}{\mathop\mathrm{abs}}
+\newcommand{\card}{\mathop\mathrm{card}}
+\newcommand{\sign}{\mathop\mathrm{sign}}
+\newcommand{\prox}{\mathrm{prox}} % prox
+\newcommand{\rank}[1]{\mathrm{rank}(#1)}
+\newcommand{\supp}[1]{\mathrm{supp}(#1)}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+%~~~~~~~~~~~~~~~
+% Common probability symbols
+%~~~~~~~~~~~~~~~
+\newcommand{\family}{\mathcal{P}} % probability family / statistical model
+\newcommand{\iid}{\stackrel{\mathrm{iid}}{\sim}}
+\newcommand{\ind}{\stackrel{\mathrm{ind}}{\sim}}
+\newcommand{\E}{\mathbb{E}} % Expectation symbol
+\newcommand{\Earg}[1]{\E\left[#1\right]}
+\newcommand{\Esubarg}[2]{\E_{#1}\left[#2\right]}
+\renewcommand{\P}{\mathbb{P}} % Probability symbol
+\newcommand{\Parg}[1]{\P\left(#1\right)}
+\newcommand{\Psubarg}[2]{\P_{#1}\left[#2\right]}
+%\newcommand{\Cov}{\mrm{Cov}} % Covariance symbol
+%\newcommand{\Covarg}[1]{\Cov\left[#1\right]}
+%\newcommand{\Covsubarg}[2]{\Cov_{#1}\left[#2\right]}
+%\newcommand{\model}{\mathcal{P}} % probability family / statistical model
+%~~~~~~~~~~~~~~~
+% Distributions
+%~~~~~~~~~~~~~~~
+%\newcommand{\Gsn}{\mathcal{N}}
+%\newcommand{\Ber}{\textnormal{Ber}}
+%\newcommand{\Bin}{\textnormal{Bin}}
+%\newcommand{\Unif}{\textnormal{Unif}}
+%\newcommand{\Mult}{\textnormal{Mult}}
+%\newcommand{\NegMult}{\textnormal{NegMult}}
+%\newcommand{\Dir}{\textnormal{Dir}}
+%\newcommand{\Bet}{\textnormal{Beta}}
+%\newcommand{\Gam}{\textnormal{Gamma}}
+%\newcommand{\Poi}{\textnormal{Poi}}
+%\newcommand{\HypGeo}{\textnormal{HypGeo}}
+%\newcommand{\GEM}{\textnormal{GEM}}
+%\newcommand{\BP}{\textnormal{BP}}
+%\newcommand{\DP}{\textnormal{DP}}
+%\newcommand{\BeP}{\textnormal{BeP}}
+%\newcommand{\Exp}{\textnormal{Exp}}
+%~~~~~~~~~~~~~~~
+% Theorem-like environments
+%~~~~~~~~~~~~~~~
+%\theoremstyle{definition}
+%\newtheorem{definition}{Definition}
+%\newtheorem{example}{Example}
+%\newtheorem{problem}{Problem}
+%\newtheorem{lemma}{Lemma}
+%~~~~~~~~~~~~~~~
+% 组合数学的模板和作业里用到的一些宏包和自定义命令
+%~~~~~~~~~~~~~~~
+\renewcommand{\emph}[1]{\begin{kaishu}#1\end{kaishu}}
+\newcommand{\falfac}[1]{^{\underline{#1}}}
+\newcommand{\binomfrac}[2]{\frac{#1^{\underline{#2}}}{#2!}}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\suminfty}[2]{\sum_{#1=#2}^{\infty}}
+\newcommand{\suminftyk}[0]{\sum_{k=0}^{\infty}}
+\newcommand{\sumint}[3]{\sum_{#1=#2}^{#3}}
+\newcommand{\sumintk}[2]{\sum_{k=#1}^{#2}}
+\newcommand{\suminti}[2]{\sum_{i=#1}^{#2}}
+%~~~~~~~~~~~~~~~
+% 定义新命令
+%~~~~~~~~~~~~~~~
+\newcommand*{\unit}[1]{\mathop{}\!\mathrm{#1}}
+\newcommand*{\dif}{\mathop{}\!\mathrm{d}}%微分算子 d
+\newcommand*{\pdif}{\mathop{}\!\partial}%偏微分算子
+\newcommand*{\cdif}{\mathop{}\!\nabla}%协变导数、nabla 算子
+\newcommand*{\laplace}{\mathop{}\!\Delta}%laplace 算子
+\newcommand*{\deri}[1]{\mathrm{d} #1}
+\newcommand*{\deriv}[2]{\frac{\mathrm{d} #1}{\mathrm{d} {#2}}}
+\newcommand*{\derivh}[3]{\frac{\mathrm{d}^{#1} #2}{\mathrm{d} {#3^{#1}}}}
+\newcommand*{\pderiv}[2]{\frac{\partial #1}{\partial {#2}}}
+\newcommand*{\pderivh}[3]{\frac{\partial^{#1} #2}{\partial {#3^{#1}}}}
+\newcommand*{\dderiv}[2]{\dfrac{\mathrm{d} #1}{\mathrm{d} {#2}}}
+\newcommand*{\dderivh}[3]{\dfrac{\mathrm{d}^{#1} #2}{\mathrm{d} {#3^{#1}}}}
+\newcommand*{\dpderiv}[2]{\dfrac{\partial #1}{\partial {#2}}}
+\newcommand*{\dpderivh}[3]{\dfrac{\partial^{#1} #2}{\partial {#3^{#1}}}}
+\newcommand{\me}[1]{\mathrm{e}^{#1}}%e 指数
+\newcommand{\mi}{\mathrm{i}}%虚数单位
+%\newcommand{\mc}{\mathrm{c}}%光速 定义与mathcal冲突
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+%\newcommand{\Rome}[1]{\setcounter{rome}{#1}\Roman{rome}}
+%~~~~~~~~~~~~~~~
+% 公式环境中箭头符号的简写
+%~~~~~~~~~~~~~~~
+\newcommand{\ra}{\rightarrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\La}{\Leftarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\Lra}{\Leftrightarrow}
+\newcommand{\lgla}{\longleftarrow}
+\newcommand{\Lgla}{\Longleftarrow}
+\newcommand{\lgra}{\longrightarrow}
+\newcommand{\Lgra}{\Longrightarrow}
+\newcommand{\lglra}{\longleftrightarrow}
+\newcommand{\Lglra}{\Longleftrightarrow}
+%~~~~~~~~~~~~~~~
+% 一些数学的环境设置
+%~~~~~~~~~~~~~~~
+%\newcounter{counter_exm}\setcounter{counter_exm}{1}
+%\newcounter{counter_prb}\setcounter{counter_prb}{1}
+%\newcounter{counter_thm}\setcounter{counter_thm}{1}
+%\newcounter{counter_lma}\setcounter{counter_lma}{1}
+%\newcounter{counter_dft}\setcounter{counter_dft}{1}
+%\newcounter{counter_clm}\setcounter{counter_clm}{1}
+%\newcounter{counter_cly}\setcounter{counter_cly}{1}
+\newtheorem{theorem}{{\hskip 1.7em \bf 定理}}
+\newtheorem{lemma}[theorem]{\hskip 1.7em 引理}
+\newtheorem{proposition}[theorem]{\hskip 1.7em 命题}
+\newtheorem{claim}[theorem]{\hskip 1.7em 断言}
+\newtheorem{corollary}[theorem]{\hskip 1.7em 推论}
+% \newcommand{\problem}[1]{{\setlength{\parskip}{10pt}\noindent \bf{#1}}}
+\newenvironment{solution}{{\noindent \bf 解 \quad}}{}
+\newenvironment{remark}{{\noindent \bf 注 \quad}}{}
+\newenvironment{definition}{{\noindent \bf 定义 \quad}}{}
+\renewenvironment{proof}{{\setlength{\parskip}{7pt}\noindent\hskip 2em \bf 证明 \quad}}{\hfill$\qed$\par}
+\newenvironment{example}{{\noindent\bf 例 \quad}}{\hfill$\qed$\par}
+%\newenvironment{concept}[1]{{\bf #1\quad} \begin{kaishu}} {\end{kaishu}\par}
+%~~~~~~~~~~~~~~~
+% 本.tex文档中特殊定义命令
+%~~~~~~~~~~~~~~~
+\newcommand{\lno}[1]{\overline{#1}}
+\newcommand{\NP}{\mathrm{NP}}
+\newcommand{\coNP}{\mathrm{coNP}}
+% \newcommand{\ISO}{\mathrm{ISO}}
+\newcommand{\SAT}{\mathrm{SAT}}
+\newcommand{\USAT}{\mathrm{USAT}}
+% \newcommand{\threeSAT}{\mathrm{3\text{-}SAT}}
+\renewcommand{\P}{\mathrm{P}}
+% \mathchardef\mhyphen="2D
+% \newcommand{\CNF}{\mathrm{CNF}}
+% \newcommand{\DNF}{\mathrm{DNF}}
+% \newcommand{\SetSp}{\mathrm{SET\text{-}SPLITTING}}
+% \newcommand{\PUZZLE}{\mathrm{PUZZLE}}
+% \newcommand{\SPATH}{\mathrm{SPATH}}
+% \newcommand{\LPATH}{\mathrm{LPATH}}
+% \newcommand{\UHAMPATH}{\mathrm{UHAMPATH}}
+\newcommand{\SPACE}{\mathrm{SPACE}}
+\newcommand{\NSPACE}{\mathrm{NSPACE}}
+\newcommand{\PSPACE}{\mathrm{PSPACE}}
+\newcommand{\NPSPACE}{\mathrm{NPSPACE}}
+\newcommand{\DFA}{\mathrm{DFA}}
+\newcommand{\NFA}{\mathrm{NFA}}
+\newcommand{\TQBF}{\mathrm{TQBF}}
+% \newcommand{\L}{\mathrm{L}}
+\renewcommand{\O}{\mathrm{O}}
+\newcommand{\NL}{\mathrm{NL}}
+\newcommand{\coNL}{\mathrm{coNL}}
+\newcommand{\LADDER}{\mathrm{LADDER_{DFA}}}
+\newcommand{\hd}{\mathrm{\text{-}hard}}
+\newcommand{\ADD}{\mathrm{ADD}}
+\newcommand{\STCN}{\mathrm{STRONGLY\text{-}CONNECTED}}
+\newcommand{\PATH}{\mathrm{PATH}}
+\newcommand{\A}{\mathrm{A}}
+%使用align环境公式换页
+\allowdisplaybreaks[4]
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{
+  frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  framerule=1pt,
+  rulecolor=\color{gray!35},
+  backgroundcolor=\color{gray!5},
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\ttfamily\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+}
+
+\lstdefinelanguage{LoongArch}{
+  morekeywords={la, lw, addi, sw, li, syscall, beqz, add, move, bge, blt, b, sub, ret, beq, bne},  
+  literate={ll.w}{{{\color{blue}ll.w}}}1
+           {sc.w}{{{\color{blue}sc.w}}}1
+           {addi.d}{{{\color{blue}addi.d}}}1
+           {st.d}{{{\color{blue}st.d}}}1
+           {st.w}{{{\color{blue}st.w}}}1
+           {ldptr.w}{{{\color{blue}ldptr.w}}}1
+           {slli.d}{{{\color{blue}slli.d}}}1
+           {ld.d}{{{\color{blue}ld.d}}}1
+           {stptr.w}{{{\color{blue}stptr.w}}}1
+           {slli.w}{{{\color{blue}slli.w}}}1
+           {ld.w}{{{\color{blue}ld.w}}}1
+           {addi.w}{{{\color{blue}addi.w}}}1
+           {add.d}{{{\color{blue}add.d}}}1
+           {sub.w}{{{\color{blue}sub.w}}}1
+           {li.w}{{{\color{blue}li.w}}}1
+           {bstrpick.d}{{{\color{blue}bstrpick.d}}}1
+           {alsl.d}{{{\color{blue}alsl.d}}}1,
+  morecomment=[l]{\#},
+  frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  framerule=1pt,
+  rulecolor=\color{gray!35},
+  backgroundcolor=\color{gray!5},
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\ttfamily\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+}
+
+% 设置超链接样式
+\hypersetup{
+    colorlinks=true,       % 将链接颜色设置为 true
+    linkcolor=magenta,        % 内部链接颜色
+    filecolor=magenta,     % 文件链接颜色
+    urlcolor=blue,         % URL 链接颜色
+    citecolor=green,       % 引用链接颜色
+}
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\ifwindows
+    \setmainfont{Times New Roman}
+    \setsansfont{Times New Roman}
+    \setmonofont{Consolas}
+    \setCJKmainfont{SimHei}
+    \setCJKsansfont{SimSun}
+    \setCJKmonofont{FangSong}
+\fi
+
+\ifmacosx
+    \setmainfont{Times New Roman}
+    \setsansfont{Times New Roman}
+    \setmonofont{Menlo}
+    \setCJKmainfont{STHeiti}
+    \setCJKsansfont{STSong}
+    \setCJKmonofont{STFangsong}
+\fi
+
+\punctstyle{kaiming}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\reporttype{Homework}                 % required
+\course{Computer Architecture} 				% optional
+\coursetitle{Boot Process}	    % optional
+\semester{Fall 2024}			    % optional
+\lecturer{Hu Weiwu}			% optional
+\scribe{2022K8009929010 Zhang Jiawei}			% required
+\lecturenumber{7}				% required (must be a number)
+\lecturedate{October 30}			% required (omit year)
+\maketitle
+
+\noindent
+\textbf{7.1}
+
+在系统复位解除之后、取指访问开始之前，需要对cache进行初始化，以此来缩短BIOS的启动时间。
+
+CACOP指令对4路cache分别进行写TAG操作，对TAG域进行初始化。
+
+\noindent
+\textbf{7.2}
+
+Cache初始化是因为在系统复位之后, Cache同样也处于一个未经初始化的状态, 也就是说Cache里面可能包含残留的或随机的数据, 如果不经初始化, 对于Cache空间的访问也可能会导致错误的命中；内存初始化是因为内存的使用和设置与外接内存芯片的种类、配置相关, 所以在计算机系统启动的过程中需要先获取内存的配置信息, 再根据该信息对内存控制器进行配置，内存的初始化实际上就是根据内存配置信息对内存控制器进行初始化，并通过控制器对内存的状态进行初始化。
+
+在HyperTransport总线配置访问总线号、设备号、功能号的位置上进行枚举, 就可以遍历整个总线, 检测到哪个地址上存在设备，通过这种方式, 如果内存发生了变化, 也可以在这个枚举的过程中被探测到。
+
+\noindent
+\textbf{7.3}
+
+整个系统能够支持$2^8$个总线、$2^13$个设备、$2^16$个功能。
+
+\noindent
+\textbf{7.4}
+
+令BAR获取到的只读0位为[n-1:4]，则地址空间命中 = \texttt{addr[31:n] == BAR[31:n]}。
+
+\noindent
+\textbf{7.5}
+
+在中断等待程序里, 从核定时查询自己的信箱寄存器。如果为 0, 则表示没有得到唤醒标志。如果非 0, 则表示主核开始唤醒从核, 此时从核还需要从其他几个信箱寄存器里得到唤醒程序的目标地址, 以及执行时的参数。然后从核将跳转到目标地址开始执行。主核在各种数据结构准备好的情况下就可以开始依次唤醒每一个从核。唤醒的过程也是串行的, 主核唤醒从核之后也会进入一个等待过程, 直到从核执行完毕再通知主核, 再唤醒一个新的从核, 如此往复, 直至系统中所有的处理器核都被唤醒并交由操作系统管理。
+
+\noindent
+\textbf{7.6}
+
+运行\texttt{lspci -v}后部分内容如下：
+
+\begin{lstlisting}
+    00:03.0 Ethernet controller: Intel Corporation 82540EM Gigabit Ethernet Controller (rev 02)
+            Subsystem: Intel Corporation PRO/1000 MT Desktop Adapter
+            Flags: bus master, 66MHz, medium devsel, latency 64, IRQ 19
+            Memory at f0200000 (32-bit, non-prefetchable) [size=128K]
+            I/0 ports at d020 [size=8]
+            Capabilities: <access denied>
+            Kernel driver in use: e1000
+            Kernel modules: e1000
+
+    00:04.0 System peripheral: InnoTek Systemberatung GmbH VirtualBox Guest Service
+            Flags: fast devsel, IRQ 20
+            I/0 ports at d040 [size=32]
+            Memory at f0400000 (32-bit, non-prefetchable) [size=4M]
+            Memory at f0800000 (32-bit, prefetchable) [size=16K]
+            Kernel driver in use: boxguest
+            Kernel modules: boxguest
+
+    00:05.0 Multimedia audio controller: Intel Corporation 82801AA AC'97 Audio Controller (rev 01)
+            Subsystem: Dell 82801AA AC'97 Audio Controller
+            Flags: bus master, medium devsel, latency 64, IRQ 21
+            I/0 ports at d100 [size=256]
+            I/0 ports at d200 [size=64]
+            Kernel driver in use: snd_intel8x0
+            Kernel modules: snd_intel8x0
+\end{lstlisting}
+
+\begin{table}[H]
+    \centering
+    \caption{部分PCI设备信息}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+        \hline
+        总线号 & 设备号 & 设备名称 & 功能号 & BAR号 & 大小 & 起始地址 & 结束地址 \\
+        \hline
+        \multirow{2}{*}{00} & \multirow{2}{*}{03} & \multirow{2}{*}{Ethernet controller} & \multirow{2}{*}{0} & 0 & 128K & f0200000 & f021FFFF \\
+        \cline{5-8}
+        & & & & 1 & 8 & d020 & d027 \\
+        \hline
+        \multirow{3}{*}{00} & \multirow{3}{*}{04} & \multirow{3}{*}{System peripheral} & \multirow{3}{*}{0} & 0 & 32 & d040 & d05F \\
+        \cline{5-8}
+        & & & & 1 & 4M & f0400000 & f07FFFFF \\
+        \cline{5-8}
+        & & & & 1 & 16K & f0800000 & f0803FFF \\
+        \hline
+        \multirow{2}{*}{00} & \multirow{2}{*}{05} & \multirow{2}{*}{Multimedia audio controller} & \multirow{2}{*}{0} & 0 & 256 & d100 & d1FF \\
+        \cline{5-8}
+        & & & & 1 & 64 & d200 & d23F \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\noindent
+\textbf{7.7}
+
+\begin{enumerate}[label=(\arabic*)]
+\item CPU领域
+    \begin{itemize}
+        \item \textbf{华为鲲鹏}：基于Armv8指令集永久授权，自主研发设计处理器内核，兼容全球Arm生态。鲲鹏920处理器是行业内首款7nm数据中心Arm处理器，具有强大的计算能力和内存带宽，支持PCIe 4.0及CCIX接口。
+        \item \textbf{海光信息}：主营产品包括CPU和DPU，兼容x86指令集，具备较高的应用兼容性和较低的迁移成本。海光信息的x86授权来自AMD，产品性能起点较高，已接近国际同类高端产品水平。
+        \item \textbf{兆芯}：由台湾威盛与上海联和投资公司合资成立，掌握中央处理器、图形处理器、芯片组三大核心技术。兆芯开先KX-6000系列处理器是国内率先实现主频3.0GHz关键突破的国产通用处理器。
+        \item \textbf{申威}：专注于高性能计算，尤其是在服务器领域，浮点运算算力与同期外国处理器相当。申威SW26010是中国首个采用国产自研架构且性能强大的计算机芯片。
+    \end{itemize}
+
+\item GPU领域
+    \begin{itemize}
+        \item \textbf{壁仞科技}：团队由国内外芯片和云计算领域核心专业人员组成，在GPU、DSA和计算机体系结构等领域具有深厚的技术积累。致力于开发原创性的通用计算体系，建立高效的软硬件平台。
+        \item \textbf{沐曦集成电路}：专注于设计具有完全自主知识产权，针对异构计算等各类应用的高性能通用GPU芯片。产品主要应用方向包含传统GPU及移动应用，人工智能、云计算、数据中心等高性能异构计算领域。
+        \item \textbf{摩尔线程}：致力于构建中国视觉计算和人工智能领域计算平台，研发全球领先的自主创新GPU知识产权，其GPU产品线覆盖通用图形计算和高性能计算。
+    \end{itemize}
+
+\item 内存颗粒和内存条
+    \begin{itemize}
+        \item \textbf{合肥长鑫}：是中国大陆规模最大、技术最先进的DRAM设计制造一体化企业。2019年，合肥长鑫1X纳米级别DDR4 DRAM内存芯片正式投产，实现了从投产到量产再到批量销售的关键跨越。
+        \item \textbf{嘉合劲威}：国内高端存储芯片封测企业、存储产品方案商，提供内存模组、固态硬盘、各类存储装置等优质产品及解决方案。2020年，嘉合劲威宣布采用长鑫内存颗粒的DDR4和采用长江存储闪存的SSD实现大规模量产。
+    \end{itemize}
+
+\item {闪存芯片和SSD盘}
+    \begin{itemize}
+    \item \textbf{长江存储}：国内第一家可以完成3D NAND Flash存储芯片的厂商，实现了国产存储芯片从无到有的突破。
+    \item 长鑫存储：长鑫存储是一家专注于DRAM芯片研发、生产和销售的企业，已建成第一座12英寸晶圆厂并投产DDR4和LPDDR4X DRAM，与国际大厂进行正面竞争。
+    \item 兆易创新：兆易创新是一家专注于存储芯片设计和销售的创新型企业，产品涵盖了闪存芯片、微控制器芯片和传感器等多个领域，其中闪存芯片是公司的核心业务之一。
+    \end{itemize}
+
+\item {液晶屏}
+    \begin{itemize}
+        \item \textbf{京东方}：前身是北京电子管厂，成立于1956年，是中国第一块集成电路的诞生之地。2003年，京东方以3.8亿美金收购韩国现代的TFT-LCD液晶面板生产线，结束了中国大陆无自主液晶屏的时代。
+        \item 华星光电：华星光电是一家专注于液晶显示屏的研发和制造的企业，其产品广泛应用于电视、手机、平板电脑等领域。
+        \item 天马微电子：天马微电子是中国领先的中小尺寸面板制造商，提供一系列液晶显示屏产品，包括用于智能手机、平板电脑和车载系统的显示屏。
+    \end{itemize}
+\end{enumerate}
+
+\end{document}
