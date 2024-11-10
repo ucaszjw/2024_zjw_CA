@@ -1,0 +1,685 @@
+% -----------------------------*- LaTeX -*------------------------------
+\documentclass[UTF8]{report}
+% ------------------------------------------------------------------------
+% Packages
+% ------------------------------------------------------------------------
+\usepackage{ctex} % 支持中文
+\usepackage[body={7in, 9in},left=1in,right=1in]{geometry} % 改变页边距
+\usepackage{amsmath} % AMS 的数学宏包
+\usepackage{amsfonts} % AMS 的数学字体宏包
+\usepackage{amssymb} % AMS 符号库
+\usepackage{bm} % 数学公式中的黑斜体
+\usepackage{amsthm} % AMS 的定理环境宏包
+\usepackage{graphicx} % 插图
+\usepackage{subfigure} % 插子图
+\usepackage{nicefrac} % 好看的分数
+\usepackage{mathrsfs} % mathscr font
+\usepackage{caption} % caption
+\usepackage{algorithm,algorithmicx} % 伪代码支持宏包
+\usepackage[noend]{algpseudocode} % 伪代码
+\usepackage{fancyhdr} % 设置页眉、页脚
+\usepackage{adjustbox} % 图片尺寸自动调整
+\usepackage{esint} % 积分符号
+\usepackage{mathtools} % 数学宏包的重要补充
+\usepackage{upgreek} % 数学环境的直立希腊字母
+\usepackage{enumitem} % 使用enumitem宏包, 改变列表项的格式
+\usepackage{color} % 支持彩色
+\usepackage{extarrows} % 任意长度的箭头
+\usepackage{tikz} % 绘图
+\usepackage{forest} % 绘树
+\usepackage{xcolor} % 颜色宏包
+\usepackage{breqn} % 公式自动换行
+\usepackage{fontsize} % 字体大小
+\usepackage[framemethod=TikZ]{mdframed} % 给文字加框
+\usepackage{fontspec} % 字体库
+\usepackage{bigstrut} % 用于表格中的换行
+\usepackage{multirow} % 表格中多行单元格合并
+\usepackage{multicol} % 表格中多列单元格合并
+\usepackage{longtable} % 长表格
+\usepackage{rotating} % 旋转图形和表格      以上三者用于绘制三线表
+\usepackage{booktabs} % 三线表宏包
+\usepackage{scribe} % Scribe 模板
+\usepackage{diagbox} % 表格斜线
+\usepackage{listings} % 插入代码
+\usepackage{verbatim} % 多行注释
+\usepackage{ifplatform} % 检测编译平台
+\usepackage{hyperref} % 超链接
+\usepackage{mathrsfs} % 花体
+\usepackage{pgffor} % foreach
+\usepackage{circuitikz} % 画电路图
+\usepackage{svg} % 插入svg
+\usetikzlibrary{shapes.geometric, arrows} % 引入流程图需要的库
+\usetikzlibrary{automata} % 引入automata库
+\usetikzlibrary{shapes,arrows,positioning,chains} % 引入positioning库
+% ------------------------------------------------------------------------
+% Macros
+% ------------------------------------------------------------------------
+%~~~~~~~~~~~~~~~
+% Utility latin
+%~~~~~~~~~~~~~~~
+\newcommand{\ie}{\textit{i.e.}}
+\newcommand{\eg}{\textit{e.g.}}
+%~~~~~~~~~~~~~~~
+% Environment shortcuts
+%~~~~~~~~~~~~~~~
+\newcommand{\balign}[1]{\ealign{\begin{align}#1\end{align}}}
+\newcommand{\baligns}[1]{\ealigns{\begin{align*}#1\end{align*}}}
+\newcommand{\bitemize}[1]{\eitemize{\begin{itemize}#1\end{itemize}}}
+\newcommand{\benumerate}[1]{\eenumerate{\begin{enumerate}#1\end{enumerate}}}
+%~~~~~~~~~~~~~~~
+% Text with quads around it
+%~~~~~~~~~~~~~~~
+\newcommand{\qtext}[1]{\quad\text{#1}\quad}
+%~~~~~~~~~~~~~~~
+% Shorthand for math formatting
+%~~~~~~~~~~~~~~~
+\newcommand{\mbb}[1]{\mathbb{#1}}
+\newcommand{\mbi}[1]{\boldsymbol{#1}} % Bold and italic (math bold italic)
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\mrm}[1]{\mathrm{#1}}
+\newcommand{\tbf}[1]{\textbf{#1}}
+\newcommand{\tsc}[1]{\textsc{#1}}
+%\def\\langle {{\langle }}
+%\def\\rangle {{\rangle }}
+\newcommand{\sT}{\sf T}
+\newcommand{\grad}{\nabla}
+\newcommand{\Proj}{\Pi}
+%~~~~~~~~~~~~~~~
+% Common sets 定义数集符号
+%~~~~~~~~~~~~~~~
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\reals}{\mathbb{R}} % Real number symbol
+\newcommand{\integers}{\mathbb{Z}} % Integer symbol
+\newcommand{\rationals}{\mathbb{Q}} % Rational numbers
+\newcommand{\naturals}{\mathbb{N}} % Natural numbers
+\newcommand{\complex}{\mathbb{C}} % Complex numbers
+%~~~~~~~~~~~~~~~
+% Common functions
+%~~~~~~~~~~~~~~~
+\renewcommand{\exp}[1]{\operatorname{exp}\left(#1\right)} % Exponential
+\newcommand{\indic}[1]{\mbb{I}\left(#1\right)} % Indicator function
+\newcommand{\indicsub}[2]{\mbb{I}_{#2}\left(#1\right)} % Indicator function
+\newcommand{\argmax}{\mathop\mathrm{arg\, max}} % Defining math symbols
+\newcommand{\argmin}{\mathop\mathrm{arg\, min}}
+\renewcommand{\arccos}{\mathop\mathrm{arccos}}
+\newcommand{\dom}{\mathop\mathrm{dom}} % Domain
+\newcommand{\range}{\mathop\mathrm{range}} % Range
+\newcommand{\diag}{\mathop\mathrm{diag}}
+\newcommand{\tr}{\mathop\mathrm{tr}}
+\newcommand{\abs}{\mathop\mathrm{abs}}
+\newcommand{\card}{\mathop\mathrm{card}}
+\newcommand{\sign}{\mathop\mathrm{sign}}
+\newcommand{\prox}{\mathrm{prox}} % prox
+\newcommand{\rank}[1]{\mathrm{rank}(#1)}
+\newcommand{\supp}[1]{\mathrm{supp}(#1)}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+%~~~~~~~~~~~~~~~
+% Common probability symbols
+%~~~~~~~~~~~~~~~
+\newcommand{\family}{\mathcal{P}} % probability family / statistical model
+\newcommand{\iid}{\stackrel{\mathrm{iid}}{\sim}}
+\newcommand{\ind}{\stackrel{\mathrm{ind}}{\sim}}
+\newcommand{\E}{\mathbb{E}} % Expectation symbol
+\newcommand{\Earg}[1]{\E\left[#1\right]}
+\newcommand{\Esubarg}[2]{\E_{#1}\left[#2\right]}
+\renewcommand{\P}{\mathbb{P}} % Probability symbol
+\newcommand{\Parg}[1]{\P\left(#1\right)}
+\newcommand{\Psubarg}[2]{\P_{#1}\left[#2\right]}
+%\newcommand{\Cov}{\mrm{Cov}} % Covariance symbol
+%\newcommand{\Covarg}[1]{\Cov\left[#1\right]}
+%\newcommand{\Covsubarg}[2]{\Cov_{#1}\left[#2\right]}
+%\newcommand{\model}{\mathcal{P}} % probability family / statistical model
+%~~~~~~~~~~~~~~~
+% Distributions
+%~~~~~~~~~~~~~~~
+%\newcommand{\Gsn}{\mathcal{N}}
+%\newcommand{\Ber}{\textnormal{Ber}}
+%\newcommand{\Bin}{\textnormal{Bin}}
+%\newcommand{\Unif}{\textnormal{Unif}}
+%\newcommand{\Mult}{\textnormal{Mult}}
+%\newcommand{\NegMult}{\textnormal{NegMult}}
+%\newcommand{\Dir}{\textnormal{Dir}}
+%\newcommand{\Bet}{\textnormal{Beta}}
+%\newcommand{\Gam}{\textnormal{Gamma}}
+%\newcommand{\Poi}{\textnormal{Poi}}
+%\newcommand{\HypGeo}{\textnormal{HypGeo}}
+%\newcommand{\GEM}{\textnormal{GEM}}
+%\newcommand{\BP}{\textnormal{BP}}
+%\newcommand{\DP}{\textnormal{DP}}
+%\newcommand{\BeP}{\textnormal{BeP}}
+%\newcommand{\Exp}{\textnormal{Exp}}
+%~~~~~~~~~~~~~~~
+% Theorem-like environments
+%~~~~~~~~~~~~~~~
+%\theoremstyle{definition}
+%\newtheorem{definition}{Definition}
+%\newtheorem{example}{Example}
+%\newtheorem{problem}{Problem}
+%\newtheorem{lemma}{Lemma}
+%~~~~~~~~~~~~~~~
+% 组合数学的模板和作业里用到的一些宏包和自定义命令
+%~~~~~~~~~~~~~~~
+\renewcommand{\emph}[1]{\begin{kaishu}#1\end{kaishu}}
+\newcommand{\falfac}[1]{^{\underline{#1}}}
+\newcommand{\binomfrac}[2]{\frac{#1^{\underline{#2}}}{#2!}}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\suminfty}[2]{\sum_{#1=#2}^{\infty}}
+\newcommand{\suminftyk}[0]{\sum_{k=0}^{\infty}}
+\newcommand{\sumint}[3]{\sum_{#1=#2}^{#3}}
+\newcommand{\sumintk}[2]{\sum_{k=#1}^{#2}}
+\newcommand{\suminti}[2]{\sum_{i=#1}^{#2}}
+%~~~~~~~~~~~~~~~
+% 定义新命令
+%~~~~~~~~~~~~~~~
+\newcommand*{\unit}[1]{\mathop{}\!\mathrm{#1}}
+\newcommand*{\dif}{\mathop{}\!\mathrm{d}}%微分算子 d
+\newcommand*{\pdif}{\mathop{}\!\partial}%偏微分算子
+\newcommand*{\cdif}{\mathop{}\!\nabla}%协变导数、nabla 算子
+\newcommand*{\laplace}{\mathop{}\!\Delta}%laplace 算子
+\newcommand*{\deri}[1]{\mathrm{d} #1}
+\newcommand*{\deriv}[2]{\frac{\mathrm{d} #1}{\mathrm{d} {#2}}}
+\newcommand*{\derivh}[3]{\frac{\mathrm{d}^{#1} #2}{\mathrm{d} {#3^{#1}}}}
+\newcommand*{\pderiv}[2]{\frac{\partial #1}{\partial {#2}}}
+\newcommand*{\pderivh}[3]{\frac{\partial^{#1} #2}{\partial {#3^{#1}}}}
+\newcommand*{\dderiv}[2]{\dfrac{\mathrm{d} #1}{\mathrm{d} {#2}}}
+\newcommand*{\dderivh}[3]{\dfrac{\mathrm{d}^{#1} #2}{\mathrm{d} {#3^{#1}}}}
+\newcommand*{\dpderiv}[2]{\dfrac{\partial #1}{\partial {#2}}}
+\newcommand*{\dpderivh}[3]{\dfrac{\partial^{#1} #2}{\partial {#3^{#1}}}}
+\newcommand{\me}[1]{\mathrm{e}^{#1}}%e 指数
+\newcommand{\mi}{\mathrm{i}}%虚数单位
+%\newcommand{\mc}{\mathrm{c}}%光速 定义与mathcal冲突
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+%\newcommand{\Rome}[1]{\setcounter{rome}{#1}\Roman{rome}}
+%~~~~~~~~~~~~~~~
+% 公式环境中箭头符号的简写
+%~~~~~~~~~~~~~~~
+\newcommand{\ra}{\rightarrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\La}{\Leftarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\Lra}{\Leftrightarrow}
+\newcommand{\lgla}{\longleftarrow}
+\newcommand{\Lgla}{\Longleftarrow}
+\newcommand{\lgra}{\longrightarrow}
+\newcommand{\Lgra}{\Longrightarrow}
+\newcommand{\lglra}{\longleftrightarrow}
+\newcommand{\Lglra}{\Longleftrightarrow}
+%~~~~~~~~~~~~~~~
+% 一些数学的环境设置
+%~~~~~~~~~~~~~~~
+%\newcounter{counter_exm}\setcounter{counter_exm}{1}
+%\newcounter{counter_prb}\setcounter{counter_prb}{1}
+%\newcounter{counter_thm}\setcounter{counter_thm}{1}
+%\newcounter{counter_lma}\setcounter{counter_lma}{1}
+%\newcounter{counter_dft}\setcounter{counter_dft}{1}
+%\newcounter{counter_clm}\setcounter{counter_clm}{1}
+%\newcounter{counter_cly}\setcounter{counter_cly}{1}
+\newtheorem{theorem}{{\hskip 1.7em \bf 定理}}
+\newtheorem{lemma}[theorem]{\hskip 1.7em 引理}
+\newtheorem{proposition}[theorem]{\hskip 1.7em 命题}
+\newtheorem{claim}[theorem]{\hskip 1.7em 断言}
+\newtheorem{corollary}[theorem]{\hskip 1.7em 推论}
+% \newcommand{\problem}[1]{{\setlength{\parskip}{10pt}\noindent \bf{#1}}}
+\newenvironment{solution}{{\noindent \bf 解 \quad}}{}
+\newenvironment{remark}{{\noindent \bf 注 \quad}}{}
+\newenvironment{definition}{{\noindent \bf 定义 \quad}}{}
+\renewenvironment{proof}{{\setlength{\parskip}{7pt}\noindent\hskip 2em \bf 证明 \quad}}{\hfill$\qed$\par}
+\newenvironment{example}{{\noindent\bf 例 \quad}}{\hfill$\qed$\par}
+%\newenvironment{concept}[1]{{\bf #1\quad} \begin{kaishu}} {\end{kaishu}\par}
+%~~~~~~~~~~~~~~~
+% 本.tex文档中特殊定义命令
+%~~~~~~~~~~~~~~~
+\newcommand{\lno}[1]{\overline{#1}}
+\newcommand{\NP}{\mathrm{NP}}
+\newcommand{\coNP}{\mathrm{coNP}}
+% \newcommand{\ISO}{\mathrm{ISO}}
+\newcommand{\SAT}{\mathrm{SAT}}
+\newcommand{\USAT}{\mathrm{USAT}}
+% \newcommand{\threeSAT}{\mathrm{3\text{-}SAT}}
+\renewcommand{\P}{\mathrm{P}}
+% \mathchardef\mhyphen="2D
+% \newcommand{\CNF}{\mathrm{CNF}}
+% \newcommand{\DNF}{\mathrm{DNF}}
+% \newcommand{\SetSp}{\mathrm{SET\text{-}SPLITTING}}
+% \newcommand{\PUZZLE}{\mathrm{PUZZLE}}
+% \newcommand{\SPATH}{\mathrm{SPATH}}
+% \newcommand{\LPATH}{\mathrm{LPATH}}
+% \newcommand{\UHAMPATH}{\mathrm{UHAMPATH}}
+\newcommand{\SPACE}{\mathrm{SPACE}}
+\newcommand{\NSPACE}{\mathrm{NSPACE}}
+\newcommand{\PSPACE}{\mathrm{PSPACE}}
+\newcommand{\NPSPACE}{\mathrm{NPSPACE}}
+\newcommand{\DFA}{\mathrm{DFA}}
+\newcommand{\NFA}{\mathrm{NFA}}
+\newcommand{\TQBF}{\mathrm{TQBF}}
+% \newcommand{\L}{\mathrm{L}}
+\renewcommand{\O}{\mathrm{O}}
+\newcommand{\NL}{\mathrm{NL}}
+\newcommand{\coNL}{\mathrm{coNL}}
+\newcommand{\LADDER}{\mathrm{LADDER_{DFA}}}
+\newcommand{\hd}{\mathrm{\text{-}hard}}
+\newcommand{\ADD}{\mathrm{ADD}}
+\newcommand{\STCN}{\mathrm{STRONGLY\text{-}CONNECTED}}
+\newcommand{\PATH}{\mathrm{PATH}}
+\newcommand{\A}{\mathrm{A}}
+%使用align环境公式换页
+\allowdisplaybreaks[4]
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{
+  frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  framerule=1pt,
+  rulecolor=\color{gray!35},
+  backgroundcolor=\color{gray!5},
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\ttfamily\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+}
+
+\lstdefinelanguage{LoongArch}{
+  morekeywords={la, lw, addi, sw, li, syscall, beqz, add, move, bge, blt, b, sub, ret, beq, bne},  
+  literate={ll.w}{{{\color{blue}ll.w}}}1
+           {sc.w}{{{\color{blue}sc.w}}}1
+           {addi.d}{{{\color{blue}addi.d}}}1
+           {st.d}{{{\color{blue}st.d}}}1
+           {st.w}{{{\color{blue}st.w}}}1
+           {ldptr.w}{{{\color{blue}ldptr.w}}}1
+           {slli.d}{{{\color{blue}slli.d}}}1
+           {ld.d}{{{\color{blue}ld.d}}}1
+           {stptr.w}{{{\color{blue}stptr.w}}}1
+           {slli.w}{{{\color{blue}slli.w}}}1
+           {ld.w}{{{\color{blue}ld.w}}}1
+           {addi.w}{{{\color{blue}addi.w}}}1
+           {add.d}{{{\color{blue}add.d}}}1
+           {sub.w}{{{\color{blue}sub.w}}}1
+           {li.w}{{{\color{blue}li.w}}}1
+           {bstrpick.d}{{{\color{blue}bstrpick.d}}}1
+           {alsl.d}{{{\color{blue}alsl.d}}}1,
+  morecomment=[l]{\#},
+  frame=tb,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  framerule=1pt,
+  rulecolor=\color{gray!35},
+  backgroundcolor=\color{gray!5},
+  basicstyle={\small\ttfamily},
+  numbers=left,
+  numberstyle=\ttfamily\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3,
+}
+
+% 设置超链接样式
+\hypersetup{
+    colorlinks=true,       % 将链接颜色设置为 true
+    linkcolor=magenta,        % 内部链接颜色
+    filecolor=magenta,     % 文件链接颜色
+    urlcolor=blue,         % URL 链接颜色
+    citecolor=green,       % 引用链接颜色
+}
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\ifwindows
+    \setmainfont{Times New Roman}
+    \setsansfont{Times New Roman}
+    \setmonofont{Consolas}
+    \setCJKmainfont{SimHei}
+    \setCJKsansfont{SimSun}
+    \setCJKmonofont{FangSong}
+\fi
+
+\ifmacosx
+    \setmainfont{Times New Roman}
+    \setsansfont{Times New Roman}
+    \setmonofont{Menlo}
+    \setCJKmainfont{STHeiti}
+    \setCJKsansfont{STSong}
+    \setCJKmonofont{STFangsong}
+\fi
+
+\punctstyle{kaiming}
+
+\begin{document}
+
+\pagestyle{fancy}
+
+\reporttype{Homework}                 % required
+\course{Computer Architecture} 				% optional
+\coursetitle{Calculator Design}	    % optional
+\semester{Fall 2024}			    % optional
+\lecturer{Hu Weiwu}			% optional
+\scribe{2022K8009929010 Zhang Jiawei}			% required
+\lecturenumber{8}				% required (must be a number)
+\lecturedate{Novmember 8}			% required (omit year)
+\maketitle
+
+\noindent
+\textbf{8.1}
+
+\begin{enumerate}[label=(\arabic*)]
+    \item $101011_2 = 43_{10}$
+    
+    $001101_2 = 13_{10}$
+
+    $01011010_2 = 90_{10}$
+
+    $0000111010000101_2 = 3717_{10}$
+
+    \item $42_{10} = 101010_2$
+    
+    $79_{10} = 1001111_2$
+
+    $811_{10} = 1100101011_2$
+
+    $374_{10} = 101110110_2$
+
+    \item $8AE_{16} = 2222_{10}$
+    
+    $C18D_{16} = 49549_{10}$
+
+    $B379_{16} = 45945_{10}$
+
+    $100_{16} = 256_{10}$
+
+    \item $81783_{10} = 13F77_{16}$
+    
+    $1922_{10} = 782_{16}$
+
+    $345208_{10} = 54478_{16}$
+
+    $5756_{10} = 167C_{16}$
+\end{enumerate}
+
+\noindent
+\textbf{8.2}
+
+32位无符号二进制数表示范围是$0 \sim 2^{32}-1$；
+
+32位二进制原码表示范围是$-(2^{31}-1) \sim 2^{31}-1$；
+
+32位二进制补码表示范围是$-2^{31} \sim 2^{31}-1$。
+
+\noindent
+\textbf{8.3}
+
+$[45_{10}]_{\text{原}} = 00101101$, $[45_{10}]_{\text{补}} = 00101101$;
+
+$[-59_{10}]_{\text{原}} = 10111011$, $[-59_{10}]_{\text{补}} = 11000101$;
+
+$[-128_{10}]_{\text{原}}$溢出, $[-128_{10}]_{\text{补}} = 10000000$;
+
+$[119_{10}]_{\text{原}} = 01110111$, $[119_{10}]_{\text{补}} = 01110111$;
+
+$[127_{10}]_{\text{原}} = 01111111$, $[127_{10}]_{\text{补}} = 01111111$。
+
+$[128_{10}]_{\text{原}}$溢出, $[128_{10}]_{\text{补}}$溢出;
+
+$[0]_{\text{原}} = 00000000$, $[0]_{\text{补}} = 00000000$;
+
+$[-1_{10}]_{\text{原}} = 10000001$, $[-1_{10}]_{\text{补}} = 11111111$。
+
+\noindent
+\textbf{8.4}
+
+$00101100_2$作为原码扩展到16位为$0000000000101100$，作为补码扩展到16位为$0000000000101100$;
+
+$11010100_2$作为原码扩展到16位为$1000000001010100$，作为补码扩展到16位为$1111111110101100$;
+
+$10000001_2$作为原码扩展到16位为$1000000000000001$，作为补码扩展到16位为$1111111110000001$;
+
+$00010111_2$作为原码扩展到16位为$0000000000010111$，作为补码扩展到16位为$0000000000010111$。
+
+\noindent
+\textbf{8.5}
+
+\begin{enumerate}[label=(\arabic*)]
+    \item 0转化为单精度浮点数为0x00000000;
+    
+    116.25转化为单精度浮点数为0x42E88000;
+
+    -4.375转化为单精度浮点数为0xC08C0000。
+
+    \item -0转化为双精度浮点数为0x8000000000000000;
+    
+    116.25转化为双精度浮点数为0x405D100000000000;
+
+    -2049.5转化为双精度浮点数为0xC0A0030000000000。
+
+    \item 0xff800000转化为十进制数为负无穷大;
+    
+    0x7fe00000转化为十进制数为非数;
+
+    \item 0x8008000000000000转化为二进制数为$-0.1 \times 2^{-1023}$，十进制数为$-0.5 \times 2^{-1023}$;
+    
+    0x7065020000000000转化为二进制数为$1.01010000001 \times 2^{775}$，十进制数为$1.31298828125 \times 2^{775}$。
+\end{enumerate}
+
+\noindent
+\textbf{8.6}
+
+逻辑电路表达式为$Y = \overline{(A + B)C}$.
+
+\noindent
+\textbf{8.7}
+
+真值表如下：
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|cccc|}
+        \hline
+        A & B & C & Y \\
+        \hline
+        0 & 0 & 0 & 1 \\
+        0 & 0 & 1 & 1 \\
+        0 & 1 & 0 & 1 \\
+        0 & 1 & 1 & 0 \\
+        1 & 0 & 0 & 1 \\
+        1 & 0 & 1 & 0 \\
+        1 & 1 & 0 & 1 \\
+        1 & 1 & 1 & 0 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\noindent
+\textbf{8.8}
+
+$Y = A \oplus B = A\overline{B} + \overline{A}B = \overline{\overline{A\overline{B}} \cdot \overline{\overline{A}B}}$.
+
+画出电路图如下：
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.5\textwidth]{8_8.svg}
+    \caption{二输入XOR电路}
+\end{figure}
+
+\noindent
+\textbf{8.9}
+
+搭建出的的电路如下：
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.7\textwidth]{8_9.svg}
+    \caption{具有同步复位的D触发器}
+\end{figure}
+
+\noindent
+\textbf{8.10}
+
+$[X]_{\text{补}} + [Y]_{\text{补}} = 2^n + X + 2^n + Y \pmod {2^n} = 2^n + X + Y = [X+Y]_{\text{补}}$。
+
+\noindent
+\textbf{8.11}
+
+只需将Y替换为-Y即可证明。
+
+\noindent
+\textbf{8.12}
+
+\begin{enumerate}[label=(\arabic*)]
+    \item 32位行波进位加法器的延迟为$3T + 31 \times 2T = 65T$。
+    \item 由于每个逻辑门扇入不超过4个，故块内输出进位延迟为$4T$，故输出所有进位总延迟为$32T$；最高位产生结果延迟为$7 \times 4T + 2T + 3T = 33T$，再加上产生$p_i, g_i$的延迟$2T$，故总延迟为$35T$。
+    \item 生成第一级$p_i, g_i$需要$2T$，生成所有进位输出需要$10T$，再通过$3T$算出最终结果，故总延迟为$15T$。
+\end{enumerate}
+
+\noindent
+\textbf{8.13}
+
+资源有限/要求低功耗/速度要求不高/面积较小时，可以采用行波进位加法器。
+
+\noindent
+\textbf{8.14}
+
+以图8-22所示4个16位块内并行块间并行加法器进行层次化扩展，将其$P$和$G$输出作为更高一层的进位输入，最终得到一个64位加法器。下层的 4 块 16 位先行进位逻辑根据各块所对应的 $p_i$ 和 $g_i$ 生成各自的块间进位生成因子$G$ 和块间进位传递因子 $P$; 上层的 4 位先行进位逻辑把下层的先行进位逻辑生成的 $P$ 和 $G$ 作为本层的 $p_i$ 和 $g_i$ 输入, 生成块间的进位 $c_{16}$ 、 $c_{32}$ 和 $c_{48}$; 下层的每块 4 位先行进位逻辑分别把 $c_0$ 以及上层计算出的 $c_{16}$ 、 $c_{32}$ 和 $c_{48}$ 作为各自块的进位输入 $c_0$ , 再结合本地的 $p_i$ 和 $g_i$ 分别计算出本块内部所需要的每一位进位。
+
+\noindent
+\textbf{8.15}
+
+令$X = -3, Y = 7$，则$[X \times Y]_{\text{补}} = [-21]_{\text{补}} = 101011$；而$[X]_{\text{补}} \times [Y]_{\text{补}} = 1101 \times 0111 = 1011011$。有$[X \times Y]_{\text{补}} \neq [X]_{\text{补}} \times [Y]_{\text{补}}$。
+
+\noindent
+\textbf{8.16}
+
+$[X \times 2^n]_{\text{补}} = X \times 2^n + 2^m \pmod {2^m} = X \times 2^n + 2^n \times 2^m = (X + 2^m) \times 2^n = [X]_{\text{补}} \times 2^n$。
+
+\noindent
+\textbf{8.17}
+
+\begin{enumerate}[label=(\arabic*)]
+    \item 使用16位块内并行块间并行加法器搭建加法树，第一级生成$p_i, g_i$需要$2T$，生成所有进位输出需要$6T$，再通过$3T$算出最终结果，故总延迟为$11T$，两级加法树总延迟为$22T$。
+    \item 华莱士树将4个16位加数转化成2个16位加数，延迟为$6T$，再通过先行进位加法器计算出最终结果，延迟为$11T$，故总延迟为$17T$。
+\end{enumerate}
+
+\noindent
+\textbf{8.18}
+
+两位Booth补码乘法器中，$[-X]_{\text{补}}$是对$-X$取补码，$[-2X]_{\text{补}}$是先将$-X$左移一位，再取补码，然后把它们加到原来的部分积上；华莱士树补码乘法器中，补码的获取方式是同样的，将多个部分积压缩成两个部分积，然后通过先行进位加法器计算出最终结果。
+
+\noindent
+\textbf{8.19}
+
+\begin{lstlisting}[language=Verilog]
+    module booth_multiplier (
+        input signed [31:0] A,      // 32位乘数
+        input signed [31:0] B,      // 32位被乘数
+        output signed [63:0] result // 64位乘积
+    );
+    
+        wire signed [32:0] pp[15:0]; // 存储16个部分积 (32+1位用于扩展符号位)
+        integer i;
+    
+        always @(*) begin
+            pp[0] = booth_encode(A, {B[1:0], 1'b0}); // Booth 编码生成每一组的部分积
+            for (i = 1; i < 16; i = i + 1) begin
+                pp[i] = booth_encode(A, B[2*i+1:2*i-1]);
+            end
+        end
+    
+        wire [63:0] sum, carry; // 用于华莱士树中的部分积和进位
+        wallace_tree wt(.pp(pp), .sum(sum), .carry(carry));
+    
+        assign result = sum + carry;
+    
+    endmodule
+    
+    // Booth Encoding Function (2位一乘)
+    function signed [32:0] booth_encode;
+        input signed [31:0] A;
+        input [2:0] B;  // 2位一乘，B为编码位 + 上一位
+        case (B)
+            3'b001, 3'b010: booth_encode = A;         // +X
+            3'b011:         booth_encode = A << 1;    // +2X
+            3'b100:         booth_encode = -(A << 1); // -2X
+            3'b101, 3'b110: booth_encode = -A;        // -X
+            default:        booth_encode = 0;         // 0
+        endcase
+    endfunction
+    
+    module wallace_tree (
+        input [63:0] pp[15:0], // 输入16个部分积，每个64位宽
+        output [63:0] sum,     // 华莱士树的部分和输出
+        output [63:0] carry    // 华莱士树的进位输出
+    );
+    
+        wire [63:0] layer_sum[5:0];   // 中间层的和
+        wire [63:0] layer_carry[5:0]; // 中间层的进位
+        integer i;
+    
+        // 第 1 层: 压缩 16 个部分积
+        // 每一列使用全加器/半加器来处理部分积的压缩
+        generate
+            for (i = 0; i < 64; i = i + 1) begin
+                // 处理每一列的压缩：三输入全加器和二输入半加器
+                if (i < 16) begin
+                    // 使用全加器压缩每列
+                    full_adder fa1(pp[0][i], pp[1][i], pp[2][i], layer_sum[0][i], layer_carry[0][i]);
+                    full_adder fa2(pp[3][i], pp[4][i], pp[5][i], layer_sum[1][i], layer_carry[1][i]);
+                    // 更多的全加器操作
+                end
+            end
+        endgenerate
+    
+        // 后续层依次压缩输出
+        generate
+            for (i = 1; i < 5; i = i + 1) begin
+                // 将每层产生的部分和与进位继续压缩
+                for (j = 0; j < 64; j = j + 1) begin
+                    full_adder fa(layer_sum[i-1][j], layer_carry[i-1][j], pp[j+1], layer_sum[i][j], layer_carry[i][j]);
+                end
+            end
+        endgenerate
+    
+        // 最后一层的和、进位输出
+        assign sum = layer_sum[4];
+        assign carry = layer_carry[4];
+    
+    endmodule
+    
+    // 定义全加器模块
+    module full_adder(
+        input a, b, cin,
+        output sum, cout
+    );
+        assign sum = a ^ b ^ cin;
+        assign cout = (a & b) | (b & cin) | (cin & a);
+    endmodule
+\end{lstlisting}
+
+\noindent
+\textbf{8.20}
+
+不可以。因为$\pi$是无限不循环小数，无法用有限的位数表示。单精度浮点数的小数部分只有23位，双精度浮点数的小数部分只有52位，故无法精确表示$\pi$。
+\end{document}
