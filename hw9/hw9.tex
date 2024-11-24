@@ -345,6 +345,10 @@
     citecolor=green,       % 引用链接颜色
 }
 
+\svgsetup{
+  inkscapeexe="D:/Program Files/Inkscape/bin/inkscape.exe"
+}
+
 \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
 \tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
 \tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
@@ -522,7 +526,7 @@
 
 使用一位BHT表时，由于初值为0，故第一次预测错误，更新为1，第二次预测正确，直至第十次不跳转，预测错误，循环往复。故每进入和退出最内层循环一次，都会有一次预测错误，预测准确率为$1 - \dfrac{100 \times 2}{1000} = 0.8$。
 
-使用两位BHT表时，由于初值为00，故第一次预测错误，更新为01，第二次预测错误，更新为10，第三次预测正确，更新为11，直至第十次不跳转，预测错误，更新为10，但是之后进入循环，需要跳转，预测正确，更新为11，循环往复。故总共只有两次预测错误，预测准确率为$1 - \dfrac{2}{1000} = 0.998$。
+使用两位BHT表时，由于初值为00，故第一次预测错误，更新为01，第二次预测错误，更新为10，第三次预测正确，更新为11，直至第十次不跳转，预测错误，更新为10，但是之后进入循环，需要跳转，预测正确，更新为11，循环往复。最内层循环中，共出现102次预测错误，第二层循环中，共出现12次预测错误，第一层循环中，共出现3次预测错误，故预测准确率为$1 - \dfrac{102 + 12 + 3}{1000} = 0.883$。
 
 \noindent
 \textbf{9.9}
